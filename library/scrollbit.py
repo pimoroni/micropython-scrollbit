@@ -55,27 +55,27 @@ def text_len(text):
     return sum(char_len(c) + 1 for c in text)
 
 def write(text, offset_col=0, offset_row=0, brightness=255):
-    I = None
+    i = None
     for letter in text:
-        I = None
+        i = None
         letter_width = char_len(letter)
 
         if letter != " " and (offset_col + letter_width) >= 1:
             if ord(letter) > 127:
-                I = _i[ord(letter) - 128]
+                i = _i[ord(letter) - 128]
             else:
                 try:
-                    I = I(letter)
+                    i = I(letter)
                 except:
                     pass
 
-        if I is not None:
-            if not draw_icon(offset_col, offset_row, I, brightness):
+        if i is not None:
+            if not draw_icon(offset_col, offset_row, i, brightness):
                 return
 
         offset_col += letter_width + 1
 
-    del I
+    del i
 
 def draw_icon(col, row, icon, brightness=255):
     brightness //= 9
