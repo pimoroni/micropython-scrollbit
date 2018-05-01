@@ -1,38 +1,60 @@
-from microbit import sleep, i2c, Image as I
+from microbit import sleep, i2c, Image
 
 WIDTH = 17
 HEIGHT = 7
 
-_f = 0
-_b = bytearray(145)
-_i = [getattr(I,x) for x in dir(I) if hasattr(getattr(I,x),'get_pixel')]
+_ADDRESS = 0x74
 
-def _w(*args):
+_MODE_REGISTER = 0x00
+_FRAME_REGISTER = 0x01
+_AUDIOSYNC_REGISTER = 0x06
+_SHUTDOWN_REGISTER = 0x0a
+
+_CONFIG_BANK = 0x0b
+_BANK_ADDRESS = 0xfd
+
+_PICTURE_MODE = 0x00
+_AUTOPLAY_MODE = 0x08
+_AUDIOPLAY_MODE = 0x18
+
+_ENABLE_OFFSET = 0x00
+_BLINK_OFFSET = 0x12
+_COLOR_OFFSET = 0x24
+
+_frame = 0
+_buf = bytearray(145)
+_icons = [getattr(Image,x) for x in dir(Image) if hasattr(getattr(Image,x),'get_pixel')]
+
+def _i2c_write(*args):
     if len(args) == 1: args = args[0]
-    i2c.write(116, bytes(args))
+    i2c.write(_ADDRESS, bytes(args))
 
 def clear():
-    global _b
-    del _b
-    _b = bytearray(145)
+    global _buf
+    del _buf
+    _buf = bytearray(145)
     
 def icon_format(text):
-    r = {}
-    for a_n in dir(I):
-       a = getattr(I, a_n)
-       if a in _i and a_n in text:
-           r[a_n] = chr(128+_i.index(a))
+    replace = {}
+    for attr_name in dir(Image):
+       attr = getattr(Image, attr_name)
+       if attr in _icons and attr_name in text:
+           replace[attr_name] = chr(128+_icons.index(attr))
 
-    return text.format(**r)
+    return text.format(**replace)
 
 def show():
-    global _f
-    _f = not _f
-    _w(253, _f)
-    _b[0] = 36
-    _w(_b)
-    _w(253, 11)
-    _w(1, _f)
+    global _frame
+
+    _frame = not _frame
+
+    _i2c_write(_BANK_ADDRESS, _frame)
+
+    _buf[0] = _COLOR_OFFSET
+    _i2c_write(_buf)
+
+    _i2c_write(_BANK_ADDRESS, _CONFIG_BANK)
+    _i2c_write(_FRAME_REGISTER, _frame)
 
 def scroll(text, brightness=255, delay=10, icons=True):
     if icons: text = icon_format(text)
@@ -55,27 +77,27 @@ def text_len(text):
     return sum(char_len(c) + 1 for c in text)
 
 def write(text, offset_col=0, offset_row=0, brightness=255):
-    I = None
+    image = None
     for letter in text:
-        I = None
+        image = None
         letter_width = char_len(letter)
 
         if letter != " " and (offset_col + letter_width) >= 1:
             if ord(letter) > 127:
-                I = _i[ord(letter) - 128]
+                image = _icons[ord(letter) - 128]
             else:
                 try:
-                    I = I(letter)
+                    image = Image(letter)
                 except:
                     pass
 
-        if I is not None:
-            if not draw_icon(offset_col, offset_row, I, brightness):
+        if image is not None:
+            if not draw_icon(offset_col, offset_row, image, brightness):
                 return
 
         offset_col += letter_width + 1
 
-    del I
+    del image
 
 def draw_icon(col, row, icon, brightness=255):
     brightness //= 9
@@ -93,10 +115,10 @@ def draw_icon(col, row, icon, brightness=255):
     return True
 
 def set_pixel(col, row, brightness):
-    _b[_pixel_addr(col, row)] = brightness
+    _buf[_pixel_addr(col, row)] = brightness
 
 def get_pixel(col, row):
-    return _b[_pixel_addr(col, row)]
+    return _buf[_pixel_addr(col, row)]
     
 def _pixel_addr(x, y):
     y = 7 - (y + 1)
@@ -109,16 +131,20 @@ def _pixel_addr(x, y):
 
     return (x * 16 + y) + 1
 
-_w(253, 11)
+_i2c_write(_BANK_ADDRESS, _CONFIG_BANK)
+
 sleep(100)
-_w(10, 0)
+_i2c_write(_SHUTDOWN_REGISTER, 0)
 sleep(100)
-_w(10, 1)
+_i2c_write(_SHUTDOWN_REGISTER, 1)
 sleep(100)
-_w(0, 0)
-_w(6, 0)
+
+_i2c_write(_MODE_REGISTER, _PICTURE_MODE)
+_i2c_write(_AUDIOSYNC_REGISTER, 0)
+
 for bank in [1,0]:
-    _w(253, bank)
-    _w([0] + [255] * 17)
+    _i2c_write(_BANK_ADDRESS, bank)
+    _i2c_write([0] + [255] * 17)
+    
 clear()
 show()
