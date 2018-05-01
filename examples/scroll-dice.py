@@ -1,7 +1,6 @@
 import random
 try:
     import scrollbit
-    scrollbit.setup()
 except ImportError:
     print("Please copy the scrollbit.py library to your micro:bit")
 

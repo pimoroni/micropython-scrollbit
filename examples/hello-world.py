@@ -6,5 +6,4 @@
 
 import scrollbit
 
-scrollbit.setup()
 scrollbit.scroll("Hello {HEART} World!")
