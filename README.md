@@ -17,6 +17,10 @@ When you reset your micro:bit, it will load main.py- so you can "import scrollbi
 
 # Function Reference
 
+### Setup your scroll:bit
+
+You should first call `setup()` to make sure your scroll:bit is set up and ready to rock-n-roll!
+
 ## Scroll text across your scroll:bit
 
 `scroll(text, brightness=255, delay=10, icons=True)`
