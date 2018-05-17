@@ -3,6 +3,10 @@ from microbit import sleep, i2c, Image
 WIDTH = 17
 HEIGHT = 7
 
+orientation = 0
+NORMAL = 0
+INVERT = 1
+
 _ADDRESS = 0x74
 
 _MODE_REGISTER = 0x00
@@ -121,7 +125,8 @@ def get_pixel(col, row):
     return _buf[_pixel_addr(col, row)]
     
 def _pixel_addr(x, y):
-    y = 7 - (y + 1)
+    y =  (7 - (y + 1))*(1 - orientation) + orientation*y
+    x = (17 - (x + 1))*orientation + (1 - orientation)*x
 
     if x > 8:
         x = x - 8

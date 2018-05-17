@@ -7,3 +7,7 @@
 import scrollbit
 
 scrollbit.scroll("Hello {HEART} World!")
+
+scrollbit.orientation = scrollbit.INVERT
+
+scrollbit.scroll("Goodbye {SKULL} Earth!")

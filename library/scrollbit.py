@@ -3,6 +3,10 @@ from microbit import sleep, i2c, Image as I
 WIDTH = 17
 HEIGHT = 7
 
+orientation = 0
+NORMAL = 0
+INVERT = 1
+
 _f = 0
 _b = bytearray(145)
 _i = [getattr(I,x) for x in dir(I) if hasattr(getattr(I,x),'get_pixel')]
@@ -99,7 +103,8 @@ def get_pixel(col, row):
     return _b[_pixel_addr(col, row)]
     
 def _pixel_addr(x, y):
-    y = 7 - (y + 1)
+    y =  (7 - (y + 1))*(1 - orientation) + orientation*y
+    x = (17 - (x + 1))*orientation + (1 - orientation)*x
 
     if x > 8:
         x = x - 8
