@@ -114,6 +114,41 @@ def _pixel_addr(x, y):
 
     return (x * 16 + y) + 1
 
+def rectangle(x1, y1, x2, y2, brightness):
+    for y in range(y1, y2+1):
+        for x in range(x1, x2+1):
+            set_pixel(x, y, brightness)
+
+
+def _sign(n):
+    return (n>0) - (n<0)
+
+
+def line(x0, y0, x1, y1,brightness):
+    dx, dy = abs(x1 - x0), abs(y1 - y0)
+    x, y = x0, y0
+    sx, sy = _sign(x1-x0), _sign(y1-y0)
+    if dx > dy:
+        err = dx / 2.0
+        while x != x1:       
+            set_pixel(x, y, brightness)          
+            err -= dy
+            if err < 0:
+                y += sy
+                err += dx
+            x += sx
+    else:
+        err = dy / 2.0
+        while y != y1:          
+            set_pixel(x, y, brightness)          
+            err -= dx
+            if err < 0:
+                x += sx
+                err += dy
+            y += sy                
+    set_pixel(x, y, brightness)          
+
+
 _w(253, 11)
 sleep(100)
 _w(10, 0)
