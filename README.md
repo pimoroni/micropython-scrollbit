@@ -19,13 +19,13 @@ When you reset your micro:bit, it will load main.py- so you can "import scrollbi
 
 ## Scroll text across your scroll:bit
 
-`scroll(text, brightness=255, delay=10, icons=True)`
+`scrollbit.scroll(text, brightness=255, delay=10, icons=True)`
 
 The text will always start off the right edge of the screen, and scroll across until it disappears off the left edge. You can optionally set the brightness and delay, and turn off icon support if you dont need it (slightly faster).
 
 EG:
 
-`scroll("Hello {HEART} World")`
+`scrollbit.scroll("Hello {HEART} World")`
 
 Icon names should be in ALL CAPS and surrounded by {CURLY BRACES}. Available icons are:
 
@@ -33,24 +33,24 @@ HEART, HEART_SMALL, HAPPY, SMILE, SAD, CONFUSED, ANGRY, ASLEEP, SURPRISED, SILLY
 
 ## Write a string of text to scroll:bit
 
-`write(text, offset_col=0, offset_row=0, brightness=255)`
+`scrollbit.write(text, offset_col=0, offset_row=0, brightness=255)`
 
 This wont appear immediately, you'll have to call `show()` to display it, but it's useful for positioning short phrases on scroll:bit.
 
 ## Show an icon on scroll:bit
 
-`draw_icon(col, row, icon, brightness=255)`
+`scrollbit.draw_icon(col, row, icon, brightness=255)`
 
 You'll need to use an icon from `microbit.Image` like `microbit.Image.HAPPY`, consult the list above or try `dir(microbit.Image)` in the Repl.
 
 ## Set a single pixel
 
-`set_pixel(col, row, brightness)`
+`scrollbit.set_pixel(col, row, brightness)`
 
 The columns and rows you can use are labelled on your scroll:bit, and the brightness can be from 0 to 255.
 
 ## Show your changes
 
-`show()`
+`scrollbit.show()`
 
 Call this to display your changes on scroll:bit.
