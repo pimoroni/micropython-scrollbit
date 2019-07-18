@@ -54,3 +54,9 @@ The columns and rows you can use are labelled on your scroll:bit, and the bright
 `scrollbit.show()`
 
 Call this to display your changes on scroll:bit.
+
+## Clear the scroll:bit
+
+`scrollbit.clear()`
+
+Call this to clear the scroll:bit display.
