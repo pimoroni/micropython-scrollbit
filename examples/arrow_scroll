@@ -1,0 +1,25 @@
+# this code was again written by F, age 11, during one of our workshops
+
+import scrollbit
+import microbit
+import time
+
+# set the starting coordinates for the arrow
+x=-6
+y=1
+
+# if the arrow is still on the screen, move the column along one and redraw
+# if it isn't on the screen, reset the column to the start position
+
+while True:
+    if x<18:
+        scrollbit.clear()
+        scrollbit.draw_icon(x, y, microbit.Image.ARROW_E, brightness=100)
+        scrollbit.show()
+        time.sleep(0.001)
+        x=x+1
+    else:
+        x=-6
+
+# change the sleep time to change the speed the arrow moves
+# change the image name to scroll a different image
