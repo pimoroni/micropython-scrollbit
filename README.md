@@ -2,7 +2,9 @@
 
 # Installing
 
-Copy the scrollbit.py file from library/scrollbit.py into your "mu_code" folder, this might be in:
+First, install the Mu micropython editor from https://codewith.mu/ by following the instructions online.
+
+Copy the code from library/scrollbit.py into your "mu_code" folder by pasting it into the blank file in the Mu editor and saving it as "scrollbit.py". The folder might be in:
 
 * C:\Users\YourUserName\mu_code on Windows
 * /Users/YourUserName/mu_code on macOS
