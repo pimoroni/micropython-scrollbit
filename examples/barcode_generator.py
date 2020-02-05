@@ -1,4 +1,4 @@
-# generates a barcode pattern on the scroll:bit that redraws every 5 seconds
+# generates a barcode pattern on the scroll:bit that redraws randomly
 # ensure scrollbit.py is copied onto your micro:bit to avoid import errors
 
 import scrollbit
@@ -15,5 +15,5 @@ while True:
         for r in range(0, 7):
             scrollbit.set_pixel(c, r, brightness)
             scrollbit.show()
-        time.sleep(5)
-        scrollbit.clear()
+        time.sleep(0.1)
+    scrollbit.clear()
