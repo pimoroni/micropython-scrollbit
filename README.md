@@ -67,5 +67,5 @@ Call this to clear the scroll:bit display.
 
 ## Memory Error
 
-If you receive a Memory Error exception on the line where you `import scroll` bit the best resolution is to copy the contents of `scrollbit.py` into your `main.py` file.
+If you receive a Memory Error exception on the line where you `import scrollbit` bit the best resolution is to copy the contents of `scrollbit.py` into your `main.py` file.
 
